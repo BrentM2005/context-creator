@@ -1,0 +1,57 @@
+name: Build Executables
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    defaults:
+      run:
+        working-directory: ./context-creator-gui
+
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: ContextCreator-Windows.exe
+            asset_name: ContextCreator-Windows
+            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.ico" --add-data "icon.png;." --copy-metadata tiktoken main.py
+            output_path: context-creator-gui/dist/ContextCreator.exe
+            
+          - os: ubuntu-latest
+            artifact_name: ContextCreator-Linux
+            asset_name: ContextCreator-Linux
+            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.png" --add-data "icon.png:." --copy-metadata tiktoken main.py
+            output_path: context-creator-gui/dist/ContextCreator
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller pyside6 qtawesome tiktoken
+
+    - name: Ensure OS dependencies for PySide6 (Linux only)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxcb-cursor0
+
+    - name: Build with PyInstaller
+      run: ${{ matrix.build_cmd }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.asset_name }}
+        path: ${{ matrix.output_path }}
