@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #8B5CF6;
+  --color-primary-hover: #7C3AED;
+  --color-bg-light: #F8FAFC;
+  --color-text-dark: #0F172A;
+  --color-text-muted: #64748B;
+  --color-border-dark: #E2E8F0;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-light text-text-dark antialiased;
+    margin: 0;
+  }
+}
