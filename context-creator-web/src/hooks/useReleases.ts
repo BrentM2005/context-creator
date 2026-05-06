@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { GitHubRelease } from '../types/GitHub';
+import type { GitHubRelease } from '../types/github';
 
 export function useReleases() {
   const[releases, setReleases] = useState<GitHubRelease[]>([]);

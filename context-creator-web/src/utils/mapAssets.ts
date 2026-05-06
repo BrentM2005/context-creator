@@ -1,4 +1,4 @@
-import type { GitHubAsset } from '../types/GitHub';
+import type { GitHubAsset } from '../types/github';
 import type { DownloadItem } from '../types/download';
 
 export function mapAssetsToDownloads(
