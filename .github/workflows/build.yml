@@ -3,7 +3,7 @@ name: Build Executables (GUI & CLI)
 on:
   push:
     tags:
-      - 'v*' # Triggers when you push a tag like v1.0.0
+      - 'v*' 
   workflow_dispatch:
     inputs:
       version:
