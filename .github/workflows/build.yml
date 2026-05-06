@@ -78,13 +78,11 @@ jobs:
         include:
           - os: windows-latest
             asset_name: ContextCreator-CLI-Windows
-            # Added --icon="logo.ico"
             build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --icon="logo.ico" --hidden-import pyperclip --copy-metadata tiktoken main.py
             output_path: context-creator-cli/dist/context-creator.exe
             
           - os: ubuntu-latest
             asset_name: ContextCreator-CLI-Linux
-            # Added --icon="logo.png"
             build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --icon="logo.png" --hidden-import pyperclip --copy-metadata tiktoken main.py
             output_path: context-creator-cli/dist/context-creator
 
