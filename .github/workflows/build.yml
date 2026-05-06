@@ -128,7 +128,7 @@ jobs:
       - name: Determine Release Tag
         id: vars
         run: |
-          if[ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "tag_name=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           else
             echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
