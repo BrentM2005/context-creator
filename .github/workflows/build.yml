@@ -2,8 +2,14 @@ name: Build Executables (GUI & CLI)
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - 'v*' # Triggers when you push a tag like v1.0.0
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
 
 permissions:
   contents: write
@@ -72,12 +78,14 @@ jobs:
         include:
           - os: windows-latest
             asset_name: ContextCreator-CLI-Windows
-            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --hidden-import pyperclip --copy-metadata tiktoken main.py
+            # Added --icon="logo.ico"
+            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --icon="logo.ico" --hidden-import pyperclip --copy-metadata tiktoken main.py
             output_path: context-creator-cli/dist/context-creator.exe
             
           - os: ubuntu-latest
             asset_name: ContextCreator-CLI-Linux
-            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --hidden-import pyperclip --copy-metadata tiktoken main.py
+            # Added --icon="logo.png"
+            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --icon="logo.png" --hidden-import pyperclip --copy-metadata tiktoken main.py
             output_path: context-creator-cli/dist/context-creator
 
     steps:
@@ -117,11 +125,20 @@ jobs:
       - name: Display structure (debug)
         run: ls -R dist
 
+      - name: Determine Release Tag
+        id: vars
+        run: |
+          if[ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "tag_name=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create Release and Upload Files
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Latest Build
+          tag_name: ${{ steps.vars.outputs.tag_name }}
+          name: Release ${{ steps.vars.outputs.tag_name }}
           files: |
             dist/**/ContextCreator.exe
             dist/**/ContextCreator

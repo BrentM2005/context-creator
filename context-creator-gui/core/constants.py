@@ -1,6 +1,23 @@
 import re
+import os
+import platform
+from pathlib import Path
 
-CONFIG_FILE = "codebase_context_config.json"
+def _get_app_data_dir():
+    home = Path.home()
+    system = platform.system()
+    if system == "Windows":
+        base = os.getenv("APPDATA", str(home / "AppData" / "Roaming"))
+        return Path(base) / "ContextCreator"
+    elif system == "Darwin":
+        return home / "Library" / "Application Support" / "ContextCreator"
+    else:
+        base = os.getenv("XDG_CONFIG_HOME", str(home / ".config"))
+        return Path(base) / "ContextCreator"
+
+APP_DIR = _get_app_data_dir()
+APP_DIR.mkdir(parents=True, exist_ok=True)
+CONFIG_FILE = str(APP_DIR / "codebase_context_config.json")
 
 IGNORED_DIRS = {
     'node_modules', '.git', '.venv', 'venv', 'env', '__pycache__',

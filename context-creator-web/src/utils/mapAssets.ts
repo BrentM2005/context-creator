@@ -4,29 +4,29 @@ import type { DownloadItem } from '../types/download';
 export function mapAssetsToDownloads(
   assets: GitHubAsset[]
 ): DownloadItem[] {
-  const find = (namePart: string): string | undefined =>
-    assets.find(a => a.name.includes(namePart))?.browser_download_url;
+  const find = (exactName: string): string | undefined =>
+    assets.find(a => a.name === exactName)?.browser_download_url;
 
-  return [
+  return[
     {
       title: 'Windows GUI',
       key: 'win-gui',
-      file: find('GUI-Windows'),
+      file: find('ContextCreator.exe'),
     },
     {
       title: 'Linux GUI',
       key: 'linux-gui',
-      file: find('GUI-Linux'),
+      file: find('ContextCreator'),
     },
     {
       title: 'Windows CLI',
       key: 'win-cli',
-      file: find('CLI-Windows'),
+      file: find('context-creator.exe'),
     },
     {
       title: 'Linux CLI',
       key: 'linux-cli',
-      file: find('CLI-Linux'),
+      file: find('context-creator'),
     },
   ];
 }

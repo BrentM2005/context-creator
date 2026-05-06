@@ -3,41 +3,54 @@ import { motion } from 'framer-motion';
 import { FaFolderOpen, FaPlay, FaCopy, FaDownload } from 'react-icons/fa';
 import { processFiles, type ProcessOptions } from '../utils/processor';
 
+type DirectoryInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  webkitdirectory?: string;
+  directory?: string;
+};
+
 export default function LiteApp() {
   const [files, setFiles] = useState<FileList | null>(null);
   const [progress, setProgress] = useState(0);
-  const[isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [output, setOutput] = useState('');
   const [tokenEstimate, setTokenEstimate] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  const[options, setOptions] = useState<ProcessOptions>({
+  const [options, setOptions] = useState<ProcessOptions>({
     maxSizeKb: 500,
     extensions: '',
     removeEmptyLines: true,
-    format: 'ChatGPT / Standard (Markdown)'
+    format: 'ChatGPT / Standard (Markdown)',
   });
 
   const handleGenerate = async () => {
-    if (!files || files.length === 0) return alert("Please select a folder first.");
+    if (!files || files.length === 0) {
+      alert('Please select a folder first.');
+      return;
+    }
+
     setIsProcessing(true);
     setProgress(0);
-    
+
     try {
       const result = await processFiles(files, options, setProgress);
       setOutput(result);
       setTokenEstimate(Math.floor(result.length / 4));
     } catch {
-      alert("Error processing files. Try a smaller directory.");
+      alert('Error processing files. Try a smaller directory.');
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-5xl mx-auto px-6 py-12">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="max-w-5xl mx-auto px-6 py-12"
+    >
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-dark mb-2">Web App (Lite)</h1>
+        <h1 className="text-3xl font-bold text-text-dark mb-2">Web Version</h1>
         <p className="text-sm bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-md">
           <strong>Note:</strong> The web version runs entirely locally in your browser. It does not support remote Git cloning or PR processing. For large monorepos, please use the Desktop GUI to avoid browser crashes.
         </p>
@@ -45,87 +58,113 @@ export default function LiteApp() {
 
       <div className="grid md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
-          
-          {/* 1. Source - Updated with Drag & Drop */}
           <div className="bg-white p-5 rounded-xl border border-border-dark">
-            <h3 className="font-bold text-sm uppercase text-text-muted mb-4 tracking-wider">1. Select Source</h3>
-            
-            <div 
+            <h3 className="font-bold text-sm uppercase text-text-muted mb-4 tracking-wider">
+              1. Select Source
+            </h3>
+
+            <div
               className={`relative w-full border-2 border-dashed rounded-lg transition-all duration-200 overflow-hidden
-                ${isDragging 
-                  ? 'border-primary bg-primary/10 scale-[1.02]' 
-                  : 'border-primary/50 hover:border-primary bg-bg-light'
+                ${
+                  isDragging
+                    ? 'border-primary bg-primary/10 scale-[1.02]'
+                    : 'border-primary/50 hover:border-primary bg-bg-light'
                 }`}
             >
-              {/* Invisible input stretched over the entire div */}
-              <input 
-                type="file" 
-                title="" // Removes the default native "No file chosen" tooltip hover
-                onChange={(e) => {
+              <input
+                type="file"
+                title=""
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFiles(e.target.files);
                   setIsDragging(false);
                 }}
                 onDragEnter={() => setIsDragging(true)}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={() => setIsDragging(false)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                {...({ webkitdirectory: "true", directory: "true" } as any)} 
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                {...({
+                  webkitdirectory: 'true',
+                  directory: 'true',
+                } satisfies DirectoryInputProps)}
               />
-              
-              {/* Visual Dropzone Content */}
+
               <div className="flex flex-col items-center justify-center gap-3 py-8 pointer-events-none">
-                <FaFolderOpen className={`text-3xl transition-colors ${isDragging ? 'text-primary' : 'text-primary/70'}`} />
+                <FaFolderOpen
+                  className={`text-3xl transition-colors ${
+                    isDragging ? 'text-primary' : 'text-primary/70'
+                  }`}
+                />
                 <div className="text-center">
                   {files ? (
                     <p className="font-bold text-primary">{files.length} files queued</p>
                   ) : (
                     <p className="font-medium text-text-dark">Drag & Drop or Browse</p>
                   )}
-                  {!files && <p className="text-xs text-text-muted mt-1">Select a local folder</p>}
+                  {!files && (
+                    <p className="text-xs text-text-muted mt-1">
+                      Select a local folder
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 2. Configuration */}
           <div className="bg-white p-5 rounded-xl border border-border-dark">
-            <h3 className="font-bold text-sm uppercase text-text-muted mb-4 tracking-wider">2. Configuration</h3>
+            <h3 className="font-bold text-sm uppercase text-text-muted mb-4 tracking-wider">
+              2. Configuration
+            </h3>
+
             <div className="space-y-4 text-sm">
               <div>
-                <label className="block text-text-dark font-medium mb-1">Target Format</label>
-                <select 
+                <label className="block text-text-dark font-medium mb-1">
+                  Target Format
+                </label>
+                <select
                   className="w-full border border-border-dark rounded p-2 outline-none focus:border-primary"
                   value={options.format}
-                  onChange={(e) => setOptions({...options, format: e.target.value})}
+                  onChange={(e) =>
+                    setOptions({ ...options, format: e.target.value })
+                  }
                 >
                   <option>ChatGPT / Standard (Markdown)</option>
                   <option>Claude Optimized (XML)</option>
                 </select>
               </div>
+
               <div>
-                <label className="block text-text-dark font-medium mb-1">Extensions (csv: .ts,.tsx)</label>
-                <input 
-                  type="text" 
+                <label className="block text-text-dark font-medium mb-1">
+                  Extensions (csv: .ts,.tsx)
+                </label>
+                <input
+                  type="text"
                   className="w-full border border-border-dark rounded p-2 outline-none focus:border-primary placeholder-text-muted/50"
                   value={options.extensions}
-                  onChange={(e) => setOptions({...options, extensions: e.target.value})}
+                  onChange={(e) =>
+                    setOptions({ ...options, extensions: e.target.value })
+                  }
                   placeholder="e.g. .ts,.tsx,.py"
                 />
               </div>
+
               <label className="flex items-center gap-2 cursor-pointer text-text-dark">
-                <input 
-                  type="checkbox" 
-                  checked={options.removeEmptyLines} 
-                  onChange={(e) => setOptions({...options, removeEmptyLines: e.target.checked})}
-                  className="accent-primary w-4 h-4" 
+                <input
+                  type="checkbox"
+                  checked={options.removeEmptyLines}
+                  onChange={(e) =>
+                    setOptions({
+                      ...options,
+                      removeEmptyLines: e.target.checked,
+                    })
+                  }
+                  className="accent-primary w-4 h-4"
                 />
                 Remove empty lines
               </label>
             </div>
           </div>
 
-          {/* Generate Button */}
-          <button 
+          <button
             onClick={handleGenerate}
             disabled={isProcessing}
             className="w-full bg-primary hover:bg-primary-hover disabled:bg-border-dark disabled:text-text-muted text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm"
@@ -134,44 +173,61 @@ export default function LiteApp() {
           </button>
         </div>
 
-        {/* Output Area */}
         <div className="md:col-span-2 bg-text-dark text-border-dark p-4 rounded-xl font-mono text-sm shadow-inner flex flex-col">
           <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
             <div>
-              <span className="text-gray-400">Output Preview </span> 
-              {output && <span className="ml-2 text-xs bg-gray-800 px-2 py-1 rounded">~{tokenEstimate.toLocaleString()} tokens</span>}
+              <span className="text-gray-400">Output Preview </span>
+              {output && (
+                <span className="ml-2 text-xs bg-gray-800 px-2 py-1 rounded">
+                  ~{tokenEstimate.toLocaleString()} tokens
+                </span>
+              )}
             </div>
+
             <div className="flex gap-2">
-              <button onClick={() => navigator.clipboard.writeText(output)} className="p-2 hover:bg-gray-800 rounded transition text-gray-400 hover:text-white" title="Copy">
+              <button
+                onClick={() => navigator.clipboard.writeText(output)}
+                className="p-2 hover:bg-gray-800 rounded transition text-gray-400 hover:text-white"
+                title="Copy"
+              >
                 <FaCopy />
               </button>
-              <button 
+
+              <button
                 onClick={() => {
-                  const blob = new Blob([output], {type: "text/plain;charset=utf-8"});
+                  const blob = new Blob([output], {
+                    type: 'text/plain;charset=utf-8',
+                  });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = options.format.includes('XML') ? 'context.xml' : 'context.md';
+                  a.download = options.format.includes('XML')
+                    ? 'context.xml'
+                    : 'context.md';
                   a.click();
-                }} 
-                className="p-2 hover:bg-gray-800 rounded transition text-gray-400 hover:text-white" title="Download"
+                }}
+                className="p-2 hover:bg-gray-800 rounded transition text-gray-400 hover:text-white"
+                title="Download"
               >
                 <FaDownload />
               </button>
             </div>
           </div>
-          
+
           {isProcessing && (
             <div className="mb-4">
               <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                <div className="h-full bg-primary transition-all duration-300" style={{ width: `${progress}%` }} />
+                <div
+                  className="h-full bg-primary transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
             </div>
           )}
 
-          <textarea 
-            readOnly 
-            value={output || "// Ready. Load a folder and click generate."}
+          <textarea
+            readOnly
+            value={output || '// Ready. Load a folder and click generate.'}
             className="flex-1 w-full bg-transparent outline-none resize-none"
           />
         </div>

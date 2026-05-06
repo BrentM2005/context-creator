@@ -25,7 +25,7 @@ export default function HomePage() {
         <div className="bg-white p-6 rounded-xl border border-border-dark shadow-sm">
           <FaDesktop className="text-primary text-2xl mb-4" />
           <h3 className="font-bold text-lg mb-2">Full Desktop GUI</h3>
-          <p className="text-text-muted text-sm">Clone remote repositories, fetch GitHub/GitLab Pull requests, and bypass browser memory limitations with our PyQt6 desktop application.</p>
+          <p className="text-text-muted text-sm">Clone remote repositories, fetch GitHub/GitLab Pull requests, and bypass browser memory limitations with the PyQt6 desktop application.</p>
         </div>
         <div className="bg-white p-6 rounded-xl border border-border-dark shadow-sm">
           <FaTerminal className="text-primary text-2xl mb-4" />
