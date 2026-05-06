@@ -1,4 +1,4 @@
-name: Build Executables
+name: Build Executables (GUI & CLI)
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-gui:
+    name: Build GUI (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     
     defaults:
@@ -17,29 +18,28 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            artifact_name: ContextCreator-Windows.exe
-            asset_name: ContextCreator-Windows
-            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.ico" --add-data "icon.png;." --copy-metadata tiktoken main.py
+            asset_name: ContextCreator-GUI-Windows
+            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.ico" --add-data "icon.png;." --copy-metadata tiktoken --hidden-import pyperclip main.py
             output_path: context-creator-gui/dist/ContextCreator.exe
             
           - os: ubuntu-latest
-            artifact_name: ContextCreator-Linux
-            asset_name: ContextCreator-Linux
-            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.png" --add-data "icon.png:." --copy-metadata tiktoken main.py
+            asset_name: ContextCreator-GUI-Linux
+            build_cmd: pyinstaller --noconsole --noconfirm --onefile --name "ContextCreator" --icon="icon.png" --add-data "icon.png:." --copy-metadata tiktoken --hidden-import pyperclip main.py
             output_path: context-creator-gui/dist/ContextCreator
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Install Dependencies
+    - name: Install GUI Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller pyside6 qtawesome tiktoken
+        pip install pyinstaller pyside6 qtawesome tiktoken pyperclip
 
     - name: Ensure OS dependencies for PySide6 (Linux only)
       if: runner.os == 'Linux'
@@ -47,10 +47,54 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libxcb-cursor0
 
-    - name: Build with PyInstaller
+    - name: Build GUI with PyInstaller
       run: ${{ matrix.build_cmd }}
 
-    - name: Upload Artifacts
+    - name: Upload GUI Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.asset_name }}
+        path: ${{ matrix.output_path }}
+
+  build-cli:
+    name: Build CLI (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    
+    defaults:
+      run:
+        working-directory: ./context-creator-cli
+
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            asset_name: ContextCreator-CLI-Windows
+            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --hidden-import pyperclip --copy-metadata tiktoken main.py
+            output_path: context-creator-cli/dist/context-creator.exe
+            
+          - os: ubuntu-latest
+            asset_name: ContextCreator-CLI-Linux
+            build_cmd: pyinstaller --noconfirm --onefile --name "context-creator" --hidden-import pyperclip --copy-metadata tiktoken main.py
+            output_path: context-creator-cli/dist/context-creator
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install CLI Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller tiktoken pyperclip
+
+    - name: Build CLI with PyInstaller
+      run: ${{ matrix.build_cmd }}
+
+    - name: Upload CLI Artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.asset_name }}
