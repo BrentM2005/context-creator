@@ -1,0 +1,166 @@
+TRANSLATIONS = {
+    "en": {
+        "desc": "Context Creator CLI - Effortlessly generate LLM context packages from codebases.",
+        "core_cmd": "Core Commands",
+        "templates": "Templates",
+        "src_opts": "Source & Output Options",
+        "filters": "Filters & Limits",
+        "ai_opt": "AI Optimization",
+        "phase_1": "Phase 1: Scanning directories & applying filters...",
+        "phase_2": "Phase 2: Processing, Scoring & Summarizing files...",
+        "phase_3": "Phase 3: Applying AI Output Optimizations...",
+        "phase_4": "Phase 4: Writing Final Context Package...",
+        "phase_5": "Phase 5: Generating Extra Artifacts...",
+        "success": "Success! Primary context file saved to:",
+        "cancelled": "Cancelled.",
+        "error": "CRITICAL ERROR:",
+        "progress": "Progress:"
+    },
+    "es": {
+        "desc": "Creador de Contexto CLI - Genera fácilmente paquetes de contexto LLM desde código.",
+        "core_cmd": "Comandos Principales",
+        "templates": "Plantillas",
+        "src_opts": "Opciones de Fuente y Salida",
+        "filters": "Filtros y Límites",
+        "ai_opt": "Optimización IA",
+        "phase_1": "Fase 1: Escaneando directorios y aplicando filtros...",
+        "phase_2": "Fase 2: Procesando, puntuando y resumiendo archivos...",
+        "phase_3": "Fase 3: Aplicando optimizaciones de salida IA...",
+        "phase_4": "Fase 4: Escribiendo paquete de contexto final...",
+        "phase_5": "Fase 5: Generando artefactos extra...",
+        "success": "¡Éxito! Archivo de contexto guardado en:",
+        "cancelled": "Cancelado.",
+        "error": "ERROR CRÍTICO:",
+        "progress": "Progreso:"
+    },
+    "fr": {
+        "desc": "Créateur de Contexte CLI - Générez facilement des contextes LLM à partir de code.",
+        "core_cmd": "Commandes Principales",
+        "templates": "Modèles",
+        "src_opts": "Options Source & Sortie",
+        "filters": "Filtres & Limites",
+        "ai_opt": "Optimisation IA",
+        "phase_1": "Phase 1 : Scan des répertoires et filtres...",
+        "phase_2": "Phase 2 : Traitement, évaluation et résumé...",
+        "phase_3": "Phase 3 : Optimisations de la sortie IA...",
+        "phase_4": "Phase 4 : Écriture du package final...",
+        "phase_5": "Phase 5 : Génération d'artefacts...",
+        "success": "Succès ! Fichier de contexte sauvegardé dans :",
+        "cancelled": "Annulé.",
+        "error": "ERREUR CRITIQUE :",
+        "progress": "Progrès :"
+    },
+    "pt": {
+        "desc": "Criador de Contexto CLI - Gere pacotes de contexto LLM facilmente.",
+        "core_cmd": "Comandos Principais",
+        "templates": "Modelos",
+        "src_opts": "Opções de Fonte e Saída",
+        "filters": "Filtros e Limites",
+        "ai_opt": "Otimização IA",
+        "phase_1": "Fase 1: Verificando diretórios e aplicando filtros...",
+        "phase_2": "Fase 2: Processando, avaliando e resumindo arquivos...",
+        "phase_3": "Fase 3: Aplicando otimizações de saída IA...",
+        "phase_4": "Fase 4: Escrevendo pacote de contexto final...",
+        "phase_5": "Fase 5: Gerando artefatos extras...",
+        "success": "Sucesso! Arquivo de contexto principal salvo em:",
+        "cancelled": "Cancelado.",
+        "error": "ERRO CRÍTICO:",
+        "progress": "Progresso:"
+    },
+    "de": {
+        "desc": "Kontext-Ersteller CLI - Mühelos LLM-Kontextpakete aus Codebasen generieren.",
+        "core_cmd": "Kernbefehle",
+        "templates": "Vorlagen",
+        "src_opts": "Quell- & Ausgabeoptionen",
+        "filters": "Filter & Limits",
+        "ai_opt": "KI-Optimierung",
+        "phase_1": "Phase 1: Verzeichnisse scannen & Filter anwenden...",
+        "phase_2": "Phase 2: Dateien verarbeiten, bewerten & zusammenfassen...",
+        "phase_3": "Phase 3: KI-Ausgabeoptimierungen anwenden...",
+        "phase_4": "Phase 4: Finales Kontextpaket schreiben...",
+        "phase_5": "Phase 5: Zusätzliche Artefakte generieren...",
+        "success": "Erfolg! Primäre Kontextdatei gespeichert unter:",
+        "cancelled": "Abgebrochen.",
+        "error": "KRITISCHER FEHLER:",
+        "progress": "Fortschritt:"
+    },
+    "ja": {
+        "desc": "コンテキストクリエーターCLI - コードベースからLLMコンテキストパッケージを簡単に生成。",
+        "core_cmd": "コアコマンド",
+        "templates": "テンプレート",
+        "src_opts": "ソースと出力オプション",
+        "filters": "フィルターと制限",
+        "ai_opt": "AI最適化",
+        "phase_1": "フェーズ 1: ディレクトリのスキャンとフィルターの適用...",
+        "phase_2": "フェーズ 2: ファイルの処理、スコアリング、要約...",
+        "phase_3": "フェーズ 3: AI出力最適化の適用...",
+        "phase_4": "フェーズ 4: 最終コンテキストパッケージの書き込み...",
+        "phase_5": "フェーズ 5: 追加アーティファクトの生成...",
+        "success": "成功！主要なコンテキストファイルが保存されました：",
+        "cancelled": "キャンセルされました。",
+        "error": "重大なエラー：",
+        "progress": "進行状況："
+    },
+    "zh": {
+        "desc": "上下文生成器 CLI - 轻松从代码库生成 LLM 上下文包。",
+        "core_cmd": "核心命令",
+        "templates": "模板",
+        "src_opts": "源与输出选项",
+        "filters": "过滤与限制",
+        "ai_opt": "AI 优化",
+        "phase_1": "阶段 1：扫描目录并应用过滤...",
+        "phase_2": "阶段 2：处理、评分与总结文件...",
+        "phase_3": "阶段 3：应用 AI 输出优化...",
+        "phase_4": "阶段 4：写入最终上下文包...",
+        "phase_5": "阶段 5：生成额外产物...",
+        "success": "成功！主上下文文件已保存至：",
+        "cancelled": "已取消。",
+        "error": "严重错误：",
+        "progress": "进度："
+    },
+    "ar": {
+        "desc": "واجهة سطر أوامر منشئ السياق - أنشئ حزم سياق LLM من قواعد الكود بسهولة.",
+        "core_cmd": "الأوامر الأساسية",
+        "templates": "القوالب",
+        "src_opts": "خيارات المصدر والإخراج",
+        "filters": "الفلاتر والحدود",
+        "ai_opt": "تحسين الذكاء الاصطناعي",
+        "phase_1": "المرحلة 1: فحص الأدلة وتطبيق الفلاتر...",
+        "phase_2": "المرحلة 2: معالجة وتقييم وتلخيص الملفات...",
+        "phase_3": "المرحلة 3: تطبيق تحسينات إخراج الذكاء الاصطناعي...",
+        "phase_4": "المرحلة 4: كتابة حزمة السياق النهائية...",
+        "phase_5": "المرحلة 5: إنشاء قطع أثرية إضافية...",
+        "success": "نجاح! تم حفظ ملف السياق الأساسي في:",
+        "cancelled": "تم الإلغاء.",
+        "error": "خطأ فادح:",
+        "progress": "التقدم:"
+    },
+    "hi": {
+        "desc": "संदर्भ निर्माता सीएलआई - कोडबेस से आसानी से LLM संदर्भ पैकेज उत्पन्न करें।",
+        "core_cmd": "मुख्य कमांड",
+        "templates": "टेम्पलेट्स",
+        "src_opts": "स्रोत और आउटपुट विकल्प",
+        "filters": "फ़िल्टर और सीमाएँ",
+        "ai_opt": "AI अनुकूलन",
+        "phase_1": "चरण 1: निर्देशिकाओं को स्कैन करना और फ़िल्टर लागू करना...",
+        "phase_2": "चरण 2: फ़ाइलों को संसाधित करना, स्कोर करना और सारांशित करना...",
+        "phase_3": "चरण 3: AI आउटपुट अनुकूलन लागू करना...",
+        "phase_4": "चरण 4: अंतिम संदर्भ पैकेज लिखना...",
+        "phase_5": "चरण 5: अतिरिक्त कलाकृतियाँ उत्पन्न करना...",
+        "success": "सफलता! प्राथमिक संदर्भ फ़ाइल सहेजी गई:",
+        "cancelled": "रद्द किया गया।",
+        "error": "गंभीर त्रुटि:",
+        "progress": "प्रगति:"
+    }
+}
+
+class I18n:
+    def __init__(self):
+        self.lang = "en"
+    def set_lang(self, lang_code):
+        if lang_code in TRANSLATIONS:
+            self.lang = lang_code
+    def tr(self, key):
+        return TRANSLATIONS.get(self.lang, {}).get(key, TRANSLATIONS["en"].get(key, key))
+
+i18n = I18n()

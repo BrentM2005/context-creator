@@ -67,12 +67,13 @@ class CodebaseToMarkdownApp(QMainWindow):
         self.lbl_app_logo_icon.setPixmap(qta.icon('fa5s.layer-group', color='#8B5CF6').pixmap(26, 26))
         self.lbl_app_logo = QLabel("Context Creator")
         self.lbl_app_logo.setObjectName("appLogo")
+        
         self.top_bar.addWidget(self.lbl_app_logo_icon)
         self.top_bar.addWidget(self.lbl_app_logo)
         self.top_bar.addStretch()
         
         self.lang_combo = QComboBox()
-        self.lang_combo.addItems(["English", "Español", "Français", "Português", "Deutsch"])
+        self.lang_combo.addItems(["English", "Español", "Français", "Português", "Deutsch", "日本語", "中文", "العربية", "हिन्दी"])
         self.lang_combo.setFixedWidth(130)
         self.lang_combo.setCursor(Qt.PointingHandCursor)
         self.top_bar.addWidget(self.lang_combo)
@@ -91,8 +92,15 @@ class CodebaseToMarkdownApp(QMainWindow):
         self.form_view.open_dir_requested.connect(self._open_output_dir)
 
     def _change_language(self, index):
-        langs =["en", "es", "fr", "pt", "de"]
+        langs =["en", "es", "fr", "pt", "de", "ja", "zh", "ar", "hi"]
+        lang_code = langs[index]
         i18n.set_lang(langs[index])
+
+        if lang_code == "ar":
+            self.setLayoutDirection(Qt.RightToLeft)
+        else:
+            self.setLayoutDirection(Qt.LeftToRight)
+
         self.retranslate_ui()
 
     def retranslate_ui(self):
